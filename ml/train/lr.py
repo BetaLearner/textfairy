@@ -1,7 +1,7 @@
 #coding=utf-8
 import sys, json
 sys.path.insert(0,'../..')
-from ml.model.sparse_lr import Sparse_LR
+from ml.model.sparse_lr import Sparse_LR, Ftrl_LR
 from ml.engine.load_data import load_svm
 
 lr_params = {
@@ -10,9 +10,19 @@ lr_params = {
     'model_file': 'lr_c0.001.model',
     'learning_rate': {
         'module': 'ml.model.learning_rate',
-        'inst': 'ConstLearningRate',
-        'l': 0.001
+        'inst': 'DecayLearningRate', #ConstLearningRate, PowerTLearningRate, DecayLearningRate
+        'l': 0.01, #const
+        'power_t': 0.5,
+        'initial': 0.2,
+        'decay': 0.999
     },
+    'ftrl': {
+        'alpha': 0.1,
+        'beta': 1,
+        'l1': 0.1,
+        'l2': 0.1 
+    },  
+    'use_bias': False,
     'threshold': 0.5,
     'T': 100,
     'bs': 100
@@ -20,6 +30,7 @@ lr_params = {
 
 def train_lr(params):
     lr = Sparse_LR(params)
+    lr = Ftrl_LR(params)
     train_y, train_x = load_svm(params['train_file'])
     test_y, test_x = load_svm(params['test_file'])
     

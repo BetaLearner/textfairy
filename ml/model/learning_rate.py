@@ -13,7 +13,7 @@
 class LearningRate(object):
     def __init__(self, params):
         self.params = params
-        self.l = 0.001
+        self.l = 0.01
 
     def get_l(self):
         return self.l
@@ -22,7 +22,8 @@ class LearningRate(object):
 class ConstLearningRate(LearningRate):
     def __init__(self, params):
         super(ConstLearningRate, self).__init__(params)
-        self.l = self.params.get('l', 0.001)
+        self.l = self.params.get('l', 0.01)
+        print 'ConstLearningRate:', self.l
 
     def get_l(self):
         return self.l    
@@ -32,6 +33,7 @@ class PowerTLearningRate(LearningRate):
         super(PowerTLearningRate, self).__init__(params)
         self.power_t = self.params.get('power_t', 0.5)
         self.t = 1
+        print 'PowerTLearningRate:', self.power_t
 
     def get_l(self):
         self.l = 1.0 / (self.t ** self.power_t)
@@ -40,9 +42,10 @@ class PowerTLearningRate(LearningRate):
 
 class DecayLearningRate(LearningRate):
     def __init__(self, params):
-        super(ExpDecayLearningRate, self).__init__(params)
-        self.l = self.params.get('initial', 0.5)
+        super(DecayLearningRate, self).__init__(params)
+        self.l = self.params.get('initial', 0.1)
         self.decay = self.params.get('decay', 0.99)
+        print 'DecayLearningRate:', self.l, self.decay
 
     def get_l(self):
         self.l *= self.decay
