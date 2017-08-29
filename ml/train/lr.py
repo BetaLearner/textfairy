@@ -1,6 +1,5 @@
 #coding=utf-8
 import sys, json
-sys.path.insert(0,'../..')
 from ml.model.sparse_lr import Sparse_LR, Ftrl_LR
 from ml.engine.load_data import load_svm
 
@@ -29,7 +28,7 @@ lr_params = {
 }
 
 def train_lr(params):
-    lr = Sparse_LR(params)
+    #lr = Sparse_LR(params)
     lr = Ftrl_LR(params)
     train_y, train_x = load_svm(params['train_file'])
     test_y, test_x = load_svm(params['test_file'])

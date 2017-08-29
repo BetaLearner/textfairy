@@ -71,6 +71,8 @@ class Sparse_LR(Model):
             self.bias -= l * self.solver.bias_gradient
         
     def loss(self, labels, instances):
+        if not labels or not instances:
+            return 0
         loss = 0
         for i in range(len(instances)):
             score = self.score(instances[i])
