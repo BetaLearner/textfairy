@@ -1,0 +1,28 @@
+{
+  "log_file": "demo.log",
+  "job_name": "demo",
+  "jobs": [
+    {
+        "job_name":"demo",
+        "map_module":"mr.mr",
+        "mapper":"Mapper",
+        "reduce_module":"mr.mr",
+        "reducer":"NONE",
+        "input_dir":"data/demo",
+        "map_output_dir":"tmp/demo",
+        "map_num":10
+    },
+    {   
+        "job_name":"demo2",
+        "map_module":"mr.mr",
+        "mapper":"Mapper",
+        "reduce_module":"mr.mr",
+        "reducer":"Reducer",
+        "input_dir":"tmp/demo",
+        "map_output_dir":"tmp/demo2",
+        "output_dir":"data/demo_output",
+        "output_file":"cat",
+        "map_num":10
+    } 
+  ]
+}

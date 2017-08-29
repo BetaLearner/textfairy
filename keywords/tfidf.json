@@ -1,0 +1,29 @@
+{
+  "log_file": "tfidf.log",
+  "job_name": "tfidf",
+  "jobs": [
+    {
+        "job_name":"idf",
+        "map_module":"keywords.idf",
+        "mapper":"IdfMapper",
+        "map_num":10,
+        "reduce_module":"keywords.idf",
+        "reducer":"IdfReducer",
+        "input_dir":"data/news",
+        "map_output_dir":"tmp/idf",
+        "output_dir":"data/news_idf",
+        "output_file":"idf",
+        "map_params": {},
+        "reduce_params": {"min_count":1}
+    },
+    {   
+        "job_name":"tfidf",
+        "map_module":"keywords.tfidf",
+        "mapper":"TfIdfMapper",
+        "map_num":10,
+        "input_dir":"data/news",
+        "map_output_dir":"data/news_tfidf",
+        "map_params": {"idf_file":"data/news_idf/idf"}
+    } 
+  ]
+}
