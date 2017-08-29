@@ -42,8 +42,8 @@ class Sparse_LR(Model):
         output = open(model_file,'wb')
         if self.use_bias:
             output.write(str(self.bias) + '\n')
-        for k,v in self.model.items():
-            output.write(k + ' ' + str(v) + '\n')
+        for kv in sorted(self.model.items(), key=lambda x:x[1], reverse=True):
+            output.write(kv[0] + ' ' + str(kv[1]) + '\n')
         output.close()
 
     def score(self, instance):
