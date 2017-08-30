@@ -24,7 +24,7 @@ class DataCache():
         self.loader_process.start()
 
     def has_next(self):
-        return self.queue.size() > 0 or self.loader_process.is_alive()
+        return self.queue.qsize() > 0 or self.loader_process.is_alive()
 
     def next_batch(self, bs=100):
         labels, instances = [], []
