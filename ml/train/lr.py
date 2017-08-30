@@ -34,9 +34,6 @@ def train_lr(params):
     train_y, train_x = load_svm(params['train_file'])
     test_y, test_x = load_svm(params['test_file'])
     
-    print lr.loss(train_y, [lr.score(x) for x in train_x])
-    print 'test'
-    sys.stdout.flush()
     for t in range(params.get('T',10)):
         batch_size = params.get('bs',100)
         inst_num = 0
@@ -47,6 +44,7 @@ def train_lr(params):
               'loss:', lr.loss(train_y, [lr.score(x) for x in train_x]), \
               'auc:', lr.evaluate(test_y, [lr.score(x) for x in test_x], metric='auc'), \
               'aprf:', ','.join(map(str, lr.evaluate(test_y, [lr.score(x) for x in test_x], metric='f1')))
+        sys.stdout.flush()
     lr.save(params['model_file'])
     
 def train_lr_with_cache(params):
@@ -66,6 +64,7 @@ def train_lr_with_cache(params):
                   'loss:', lr.loss(labels, scores), \
                   'auc:',  lr.evaluate(labels, scores), \
                   'aprf:', ','.join(map(str, lr.evaluate(labels, scores, metric='f1')))
+            sys.stdout.flush()
 
     print 'loss:', lr.loss(DataCache(params['train_file'], scan_num=1)), \
           'auc:', lr.evaluate(DataCache(params['test_file'], scan_num=1), metric='auc'), \
@@ -80,4 +79,4 @@ if __name__ == '__main__':
     train_lr(json.loads(open(sys.argv[1]).read()))
     '''
     train_lr(lr_params)
-    
+    #train_lr_with_cache(lr_params)
