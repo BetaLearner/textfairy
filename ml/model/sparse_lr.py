@@ -70,13 +70,24 @@ class Sparse_LR(Model):
         if self.use_bias:
             self.bias -= l * self.solver.bias_gradient
         
-    def loss(self, labels, instances):
-        if not labels or not instances:
+    def score_cache(self, data_cache):
+        labels, socres = [], []
+        while data_cache.has_next():
+            labels_, insts_ = data_cache.next_batch()
+            labels.extend(labels_)
+            scores.extend([self.score(inst) for inst in insts_])
+        return labels, scores
+
+    def loss(self, data_cache):
+        labels, socres = self.score_cache(data_cache)
+        return self.loss(labels, scores)
+         
+    def loss(self, labels, scores):
+        if not labels or not scores:
             return 0
         loss = 0
-        for i in range(len(instances)):
-            score = self.score(instances[i])
-            loss += abs(score - labels[i])
+        for i in range(len(scores)):
+            loss += abs(scores[i] - labels[i])
             '''
             if 0 == int(labels[i]):
                 print 'score', score
@@ -87,13 +98,15 @@ class Sparse_LR(Model):
                 print 'error label', labels[i]
                 sys.exit(0)
             '''
-        return loss / len(instances)
-            
-    def evaluate(self, labels, instances, metric='auc'):
-        predicts = []
-        for i in range(len(instances)):
-            predicts.append(self.score(instances[i]))
-        return getattr(sys.modules['ml.evaluate.evaluate'], metric)(predicts, labels, self.threshold)
+        return loss / len(labels)
+
+    def evaluate(self, data_cache, metric='auc'):
+        labels, scores = self.score_cache(data_cache)
+        return self.evaluate(labels, scores, metric)
+
+    def evaluate(self, labels, scores, metric='auc'):
+        return getattr(sys.modules['ml.evaluate.evaluate'], metric)(labels, scores, self.threshold)
+
 
 class Ftrl_LR(Sparse_LR):
     def __init__(self, params):

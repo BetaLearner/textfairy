@@ -1,7 +1,7 @@
 #coding=utf-8
 import sys
 
-def f1(scores, labels, threshold=0.5):
+def f1(labels, scores, threshold=0.5):
     if not scores or not labels:
         return [-1, -1, -1, -1]
     tp, tn, fn, fp = 0,0,0,0
@@ -27,7 +27,7 @@ def f1(scores, labels, threshold=0.5):
     f1 = 2 * precision * recall / (precision + recall) if precision + recall != 0 else 0
     return [accurate, precision, recall, f1]
 
-def auc(scores, labels, threshold=0.5):
+def auc(labels, scores, threshold=0.5):
     if not scores or not labels:
         return 0.0
     label_scores = zip(labels, scores)
@@ -50,15 +50,15 @@ def auc(scores, labels, threshold=0.5):
 
     return sum_ * 1.0 / (sum_neg * sum_pos)
 
-def evaluate_file(score_file, label_file, threshold=0, metric='auc'):
-    scores = [float(line.strip().split()[0]) for line in open(score_file)]
+def evaluate_file(label_file, score_file, threshold=0, metric='auc'):
     labels = [int(line.strip().split()[0]) for line in open(label_file)]
-    return globals()[metric](scores, labels, threshold)
+    scores = [float(line.strip().split()[0]) for line in open(score_file)]
+    return globals()[metric](labels, scores, threshold)
 
 def test():
-    scores = [-1, 2, 3, 4]
     labels = [0, 0, 0 ,1]
-    return auc(scores, labels)
+    scores = [-1, 2, 3, 4]
+    return auc(labels, scores)
     
 if __name__ == '__main__':
     print 'auc:', evaluate_file(sys.argv[1], sys.argv[2], metric='auc')

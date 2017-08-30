@@ -19,9 +19,18 @@ class Model(object):
     def update(self, labels, instances):
         return True
 
+    def score_cache(self, data_cache):
+        return [], []
+
+    def loss(self, data_cache):
+        return
+
     def loss(self, labels, instances):
         return 
         
+    def evaluate(self, data_cache, metric='auc'):
+        return
+
     def evaluate(self, labels, instances, metric='auc'):
         return
 
