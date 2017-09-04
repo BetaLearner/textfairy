@@ -2,7 +2,7 @@
 import sys
 
 def f1(labels, scores, threshold=0.5):
-    if not scores or not labels:
+    if not len(labels) or not len(scores):
         return [-1, -1, -1, -1]
     tp, tn, fn, fp = 0,0,0,0
     pos_num, neg_num = 0,0
@@ -28,7 +28,7 @@ def f1(labels, scores, threshold=0.5):
     return [accurate, precision, recall, f1]
 
 def auc(labels, scores, threshold=0.5):
-    if not scores or not labels:
+    if not len(labels) or not len(scores):
         return 0.0
     label_scores = zip(labels, scores)
     label_scores.sort(key=lambda x:x[1])
